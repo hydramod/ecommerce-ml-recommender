@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: fct_sales_minute
+    description: Minute-level GMV + paid order counts (paid_only from silver).
+    columns:
+      - name: minute_bucket
+        tests: [not_null, unique]        # unique key for incremental
+      - name: gmv
+        tests:
+          - not_null
+          #- dbt_utils.expression_is_true:
+          #    expression: "gmv >= 0"
+      - name: paid_orders
+        tests:
+          - not_null
+          #- dbt_utils.expression_is_true:
+          #    expression: "paid_orders >= 0"
+      - name: processed_ts
+        tests: [not_null]
+  - name: vw_sales_last_60min
+    description: Last N minutes of GMV and paid order counts (default 60).
