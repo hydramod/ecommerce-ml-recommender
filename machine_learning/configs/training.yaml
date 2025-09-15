@@ -1,20 +1,19 @@
 data:
-  # Primary (training): file snapshots
-  backend: "files"   # files | trino
-  interactions_path: "./data/delta/ecom/ml/interactions/2025-09-15/"
-  items_path: "./data/delta/ecom/ml/items/2025-09-15/"
+  backend: "files"
+  interactions_path: "./data/delta/ecom/ml/interactions/2025-09-15/"  # adjust date
+  items_path: ""  # fill later if you export items
   min_user_events: 3
   min_item_events: 5
 
-  # Secondary (on-demand reads / validation): Trino
+  # optional for hybrid reads/validation
   trino:
-    host: "localhost"
+    host: "trino"
     port: 8080
     user: "ml"
     catalog: "delta"
-    schema: "ecom"
-    interactions_table: "silver_orders"
-    items_table: "dim_items"
+    schema: "silver"
+    interactions_table: "orders_clean"
+    items_table: ""   # fill when available
 
 model:
   name: "mf"          # popularity | item_item | mf
