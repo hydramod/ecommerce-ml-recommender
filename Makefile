@@ -32,3 +32,13 @@ health:
 	@curl -s http://localhost/payment/health | jq . || true
 	@curl -s http://localhost/shipping/health | jq . || true
 	@curl -s http://localhost/notifications/health | jq . || true
+
+ml-train:
+\tpython -m ml.training.train --config ml/configs/training.yaml
+
+ml-use-snapshot:
+\tsed -i.bak 's/backend: \"trino\"/backend: \"files\"/' ml/configs/training.yaml
+
+ml-use-trino:
+\tsed -i.bak 's/backend: \"files\"/backend: \"trino\"/' ml/configs/training.yaml
+

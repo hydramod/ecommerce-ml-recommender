@@ -1,0 +1,34 @@
+data:
+  # Primary (training): file snapshots
+  backend: "files"   # files | trino
+  interactions_path: "./data/delta/ecom/ml/interactions/2025-09-15/"
+  items_path: "./data/delta/ecom/ml/items/2025-09-15/"
+  min_user_events: 3
+  min_item_events: 5
+
+  # Secondary (on-demand reads / validation): Trino
+  trino:
+    host: "localhost"
+    port: 8080
+    user: "ml"
+    catalog: "delta"
+    schema: "ecom"
+    interactions_table: "silver_orders"
+    items_table: "dim_items"
+
+model:
+  name: "mf"          # popularity | item_item | mf
+  factors: 128
+  iters: 20
+  alpha: 40
+
+eval:
+  k: 10
+  split:
+    type: temporal
+    val_days: 23
+    test_days: 7
+
+registry:
+  mlflow_uri: "file:./mlruns"
+  artifact_dir: "ml/artifacts/latest"
